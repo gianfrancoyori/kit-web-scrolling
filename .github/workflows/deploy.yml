@@ -17,6 +17,8 @@ jobs:
           server: sitio45.sitiodns.net
           username: rapidtra
           password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
           local-dir: ./
           server-dir: /home/rapidtra/public_html/
           exclude: |
