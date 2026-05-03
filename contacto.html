@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cotizar | Rapid Transfer La Serena</title>
+  <meta name="description" content="Cotiza tu bordado, estampado o ropa corporativa con Rapid Transfer en La Serena. Respuesta el mismo día.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/shared.css">
+  <style>
+    /* ── Contact layout ── */
+    .contact-main { padding:5rem 2.5rem; }
+    .contact-grid {
+      max-width:1140px; margin:0 auto;
+      display:grid; grid-template-columns:1fr 1.6fr; gap:4rem; align-items:start;
+    }
+
+    /* ── Info sidebar ── */
+    .contact-info { opacity:0; transform:translateX(-25px); }
+    .info-card {
+      background:var(--navy); border-radius:20px; padding:2.5rem;
+      margin-bottom:1.5rem; position:relative; overflow:hidden;
+    }
+    .info-card::before {
+      content:''; position:absolute; top:-30%; right:-15%;
+      width:200px; height:200px; border-radius:50%;
+      background:radial-gradient(circle, rgba(15,163,212,.12), transparent 70%);
+    }
+    .info-card-title { font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:1.5rem; position:relative; }
+    .info-card-title em { font-style:normal; color:var(--accent); }
+    .contact-item {
+      display:flex; align-items:flex-start; gap:.85rem; margin-bottom:1.2rem; position:relative;
+    }
+    .contact-item:last-child { margin-bottom:0; }
+    .ci-ico {
+      width:38px; height:38px; border-radius:10px; flex-shrink:0;
+      background:rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center; font-size:1rem;
+    }
+    .ci-lbl { font-size:.7rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.2rem; }
+    .ci-val { font-size:.88rem; color:rgba(255,255,255,.88); }
+    .ci-val a { color:var(--accent); text-decoration:none; }
+    .ci-val a:hover { text-decoration:underline; }
+
+    .hours-card {
+      background:var(--light); border:1px solid var(--border);
+      border-radius:16px; padding:1.75rem;
+    }
+    .hours-card-title { font-size:.82rem; font-weight:800; color:var(--navy); text-transform:uppercase; letter-spacing:.1em; margin-bottom:1.1rem; }
+    .hours-row { display:flex; justify-content:space-between; align-items:center; padding:.45rem 0; border-bottom:1px solid var(--border); font-size:.83rem; }
+    .hours-row:last-child { border-bottom:none; }
+    .hours-row .day { color:var(--navy); font-weight:600; }
+    .hours-row .time { color:var(--muted); }
+    .hours-row .closed { color:#ef4444; font-weight:600; }
+
+    /* ── Form ── */
+    .contact-form-wrap { opacity:0; transform:translateX(25px); }
+    .form-card {
+      background:#fff; border:1px solid var(--border); border-radius:20px;
+      padding:2.5rem; box-shadow:0 8px 40px rgba(5,43,66,.07);
+    }
+    .form-title { font-size:1.35rem; font-weight:900; color:var(--navy); margin-bottom:.5rem; }
+    .form-title em { font-style:normal; color:var(--accent); }
+    .form-sub { font-size:.84rem; color:var(--muted); margin-bottom:2rem; line-height:1.6; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+    .form-group { display:flex; flex-direction:column; gap:.4rem; margin-bottom:1rem; }
+    .form-group:last-of-type { margin-bottom:0; }
+    .form-label { font-size:.78rem; font-weight:700; color:var(--navy); letter-spacing:.03em; }
+    .form-label span { color:#ef4444; }
+    .form-input, .form-select, .form-textarea {
+      padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px;
+      font-family:inherit; font-size:.88rem; color:var(--text);
+      background:#fff; outline:none;
+      transition:border-color .2s, box-shadow .2s;
+      width:100%;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color:var(--accent); box-shadow:0 0 0 3px rgba(15,163,212,.12);
+    }
+    .form-textarea { resize:vertical; min-height:120px; }
+    .form-select { cursor:pointer; }
+    .form-check {
+      display:flex; align-items:flex-start; gap:.75rem; margin-top:1.25rem;
+    }
+    .form-check input[type=checkbox] { flex-shrink:0; width:17px; height:17px; margin-top:2px; accent-color:var(--accent); }
+    .form-check label { font-size:.78rem; color:var(--muted); line-height:1.6; }
+    .form-submit {
+      width:100%; margin-top:1.5rem; padding:1rem; border-radius:50px;
+      background:var(--navy); color:#fff; border:none; cursor:pointer;
+      font-family:inherit; font-size:.95rem; font-weight:700; letter-spacing:.03em;
+      transition:background .2s, transform .2s;
+    }
+    .form-submit:hover { background:var(--accent); transform:translateY(-2px); }
+    .form-wa-alt {
+      margin-top:1.25rem; padding:1rem; border-radius:50px;
+      background:var(--wa); color:#fff; border:none; cursor:pointer;
+      font-family:inherit; font-size:.88rem; font-weight:700;
+      display:flex; align-items:center; justify-content:center; gap:.6rem;
+      text-decoration:none; width:100%;
+      transition:transform .2s, box-shadow .2s;
+    }
+    .form-wa-alt:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(37,211,102,.4); }
+    .form-divider { text-align:center; color:var(--muted); font-size:.78rem; margin:.75rem 0; position:relative; }
+    .form-divider::before, .form-divider::after {
+      content:''; position:absolute; top:50%; width:38%; height:1px; background:var(--border);
+    }
+    .form-divider::before { left:0; } .form-divider::after { right:0; }
+
+    /* ── Success message ── */
+    .form-success {
+      display:none; text-align:center; padding:2rem;
+    }
+    .form-success .check { font-size:3rem; margin-bottom:.75rem; }
+    .form-success h3 { color:var(--navy); font-size:1.25rem; font-weight:900; margin-bottom:.5rem; }
+    .form-success p { color:var(--muted); font-size:.88rem; line-height:1.7; }
+
+    /* ── Map ── */
+    .map-section { padding:0 2.5rem 5rem; }
+    .map-inner { max-width:1140px; margin:0 auto; }
+    .map-header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem; }
+    .map-address { font-size:.9rem; color:var(--muted); }
+    .map-address strong { color:var(--navy); }
+    .map-nav-btns { display:flex; gap:.75rem; flex-wrap:wrap; }
+    .map-nav-btn {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding:.55rem 1.15rem; border-radius:50px;
+      font-size:.82rem; font-weight:700; text-decoration:none;
+      transition:transform .18s, box-shadow .18s;
+    }
+    .map-nav-btn:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.15); }
+    .map-nav-btn.gmaps { background:#4285F4; color:#fff; }
+    .map-nav-btn.waze  { background:#33CCFF; color:#000; }
+    .map-frame {
+      border-radius:18px; overflow:hidden;
+      box-shadow:0 12px 40px rgba(5,43,66,.1);
+      height:380px;
+    }
+    .map-frame iframe { width:100%; height:100%; border:none; display:block; }
+
+    @media (max-width:960px) {
+      .contact-grid { grid-template-columns:1fr; gap:2.5rem; }
+      .contact-info, .contact-form-wrap { transform:none; }
+      .form-row { grid-template-columns:1fr; }
+      .contact-main { padding:3.5rem 1.5rem; }
+      .map-section { padding:0 1.5rem 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+<a href="https://wa.me/56998180613?text=Hola%2C%20quiero%20cotizar" target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="navbar-logo"><img src="assets/logos/8.jpg" alt="Rapid Transfer"></a>
+  <ul class="navbar-menu" id="navMenu">
+    <li><a href="index.html">Inicio</a></li>
+    <li class="has-drop">
+      <a href="#">Nuestros Servicios</a>
+      <ul class="dropdown">
+        <li><a href="bordados.html"><span class="drop-icon">🧵</span> Bordados</a></li>
+        <li><a href="estampados.html"><span class="drop-icon">🖨️</span> Estampados</a></li>
+        <li class="has-subdrop">
+          <a href="ropa-corporativa.html"><span class="drop-icon">👔</span> Ropa Corporativa</a>
+          <ul class="subdropdown">
+            <li><a href="ropa-corporativa.html#classic">Classic</a></li>
+            <li><a href="ropa-corporativa.html#executive">Executive</a></li>
+            <li><a href="ropa-corporativa.html#advance">Advance</a></li>
+            <li><a href="ropa-corporativa.html#practical">Practical</a></li>
+            <li><a href="ropa-corporativa.html#free-action">Free Action</a></li>
+            <li><a href="ropa-corporativa.html#hi-vis">Hi-Vis</a></li>
+            <li><a href="ropa-corporativa.html#iron">Iron</a></li>
+            <li><a href="ropa-corporativa.html#outwork">Outwork</a></li>
+            <li><a href="ropa-corporativa.html#technic">Technic</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="nosotros.html">Nosotros</a></li>
+    <li class="active"><a href="contacto.html">Contacto</a></li>
+  </ul>
+  <div class="navbar-right">
+    <a href="https://wa.me/56998180613" target="_blank" class="nav-wa-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+    <a href="contacto.html" class="nav-cta-btn">Cotizar ahora</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-content">
+    <div class="page-hero-eyebrow">Hablemos</div>
+    <h1>Cotiza tu <em>pedido</em></h1>
+    <p>Rellena el formulario o escríbenos por WhatsApp. Te respondemos el mismo día con precio y plazo exactos.</p>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Inicio</a>
+    <span>›</span>
+    <span>Contacto</span>
+  </div>
+</div>
+
+<!-- CONTACT MAIN -->
+<main class="contact-main">
+  <div class="contact-grid">
+
+    <!-- INFO -->
+    <div class="contact-info">
+      <div class="info-card">
+        <div class="info-card-title">Información de <em>contacto</em></div>
+
+        <div class="contact-item">
+          <div class="ci-ico">📍</div>
+          <div>
+            <div class="ci-lbl">Dirección</div>
+            <div class="ci-val">Av. Balmaceda 1644, La Serena<br>Región de Coquimbo, Chile</div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="ci-ico">📞</div>
+          <div>
+            <div class="ci-lbl">Teléfono / WhatsApp</div>
+            <div class="ci-val"><a href="tel:+56998180613">+56 9 98180613</a></div>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="ci-ico">✉️</div>
+          <div>
+            <div class="ci-lbl">Correo electrónico</div>
+            <div class="ci-val"><a href="mailto:contacto@rapidtransfer.cl">contacto@rapidtransfer.cl</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hours-card">
+        <div class="hours-card-title">Horario de atención</div>
+        <div class="hours-row"><span class="day">Lunes – Viernes</span><span class="time">9:00 – 16:00</span></div>
+        <div class="hours-row"><span class="day">Sábado</span><span class="closed">Cerrado</span></div>
+        <div class="hours-row"><span class="day">Domingo</span><span class="closed">Cerrado</span></div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form-wrap">
+      <div class="form-card">
+        <div id="formContent">
+          <div class="form-title">Solicitar <em>presupuesto</em></div>
+          <p class="form-sub">Cuéntanos qué necesitas y te respondemos con precio y plazo el mismo día.</p>
+
+          <form id="quoteForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="nombre">Nombre <span>*</span></label>
+                <input class="form-input" type="text" id="nombre" name="nombre" placeholder="Tu nombre" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="empresa">Empresa</label>
+                <input class="form-input" type="text" id="empresa" name="empresa" placeholder="Nombre de tu empresa">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="telefono">Teléfono <span>*</span></label>
+                <input class="form-input" type="tel" id="telefono" name="telefono" placeholder="+56 9 XXXX XXXX" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="email" id="email" name="email" placeholder="tu@correo.cl">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="servicio">¿Qué servicio necesitas? <span>*</span></label>
+              <select class="form-select" id="servicio" name="servicio" required>
+                <option value="" disabled selected>Selecciona un servicio…</option>
+                <option>Bordado sobre mis prendas</option>
+                <option>Bordado + prendas del catálogo</option>
+                <option>Estampado DTF</option>
+                <option>Estampado Vinilo Textil</option>
+                <option>Sublimación</option>
+                <option>Ropa corporativa con personalización</option>
+                <option>Otro / No sé todavía</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="cantidad">Cantidad de prendas</label>
+                <input class="form-input" type="number" id="cantidad" name="cantidad" placeholder="Ej: 50" min="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="plazo">Plazo deseado</label>
+                <select class="form-select" id="plazo" name="plazo">
+                  <option value="" disabled selected>Cuándo lo necesitas…</option>
+                  <option>Urgente (1–2 días)</option>
+                  <option>Esta semana</option>
+                  <option>En 2 semanas</option>
+                  <option>Sin urgencia</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="mensaje">Cuéntanos más sobre tu pedido</label>
+              <textarea class="form-textarea" id="mensaje" name="mensaje" placeholder="Descripción del pedido, colores, tamaño del bordado/estampado, si tienes logo listo..."></textarea>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" id="privacy" name="privacy" required>
+              <label for="privacy">Acepto que Rapid Transfer me contacte para responder esta consulta.</label>
+            </div>
+
+            <button type="submit" class="form-submit">Enviar solicitud de presupuesto →</button>
+          </form>
+
+          <div class="form-divider">o si prefieres</div>
+
+          <a href="https://wa.me/56998180613?text=Hola%2C%20quiero%20cotizar%20un%20pedido%20de%20personalizaci%C3%B3n%20textil" target="_blank" class="form-wa-alt">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Cotizar directo por WhatsApp
+          </a>
+        </div>
+
+        <div class="form-success" id="formSuccess">
+          <div class="check">✅</div>
+          <h3>¡Solicitud enviada!</h3>
+          <p>Recibimos tu solicitud y te responderemos en horario de atención (Lun–Vie 9:00–16:00).<br><br>Si lo prefieres, también puedes contactarnos por WhatsApp: <a href="https://wa.me/56998180613" target="_blank" style="color:var(--accent)">+56 9 98180613</a>.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-inner">
+    <div class="map-header">
+      <div class="map-address">
+        <strong>📍 Cómo llegar</strong> &nbsp;·&nbsp; Av. Balmaceda 1644, La Serena
+      </div>
+      <div class="map-nav-btns">
+        <a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Balmaceda+1644,+La+Serena,+Chile"
+           target="_blank" rel="noopener" class="map-nav-btn gmaps">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+          Abrir en Google Maps
+        </a>
+        <a href="https://waze.com/ul?q=Av+Balmaceda+1644+La+Serena+Chile&navigate=yes"
+           target="_blank" rel="noopener" class="map-nav-btn waze">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="black"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 2a8 8 0 110 16A8 8 0 0112 4zm-2 5a1 1 0 100 2 1 1 0 000-2zm4 0a1 1 0 100 2 1 1 0 000-2zm-4.5 5s.75 2 2.5 2 2.5-2 2.5-2H9.5z"/></svg>
+          Abrir en Waze
+        </a>
+      </div>
+    </div>
+    <div class="map-frame">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3518.5!2d-71.254!3d-29.905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDU0JzE4LjAiUyA3McKwMTUnMTQuNCJX!5e0!3m2!1ses!2scl!4v1600000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Ubicación Rapid Transfer La Serena">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <img src="assets/logos/1.jpg" alt="Rapid Transfer">
+      <p>Soluciones en bordado, estampado y ropa corporativa en La Serena. 20+ años de experiencia.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Servicios</div>
+      <ul>
+        <li><a href="bordados.html">Bordados</a></li>
+        <li><a href="estampados.html">Estampados</a></li>
+        <li><a href="ropa-corporativa.html">Ropa Corporativa</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Empresa</div>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="nosotros.html">Nosotros</a></li>
+        <li><a href="contacto.html">Cotizar</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Contacto</div>
+      <div class="footer-contact-item">📍 Av. Balmaceda 1644, La Serena</div>
+      <div class="footer-contact-item">📞 <a href="tel:+56998180613">+56 9 98180613</a></div>
+      <div class="footer-contact-item">✉️ <a href="mailto:contacto@rapidtransfer.cl">contacto@rapidtransfer.cl</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Rapid Transfer. Todos los derechos reservados.</div>
+    <div class="footer-social">
+      <a href="#" class="soc-link"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="https://www.instagram.com/rapidtransfer.cl" class="soc-link" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+      <a href="https://www.linkedin.com/company/RapidTransfer" class="soc-link" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('elevated', window.scrollY > 20), { passive:true });
+  const hamburger = document.getElementById('hamburger');
+  const navMenu   = document.getElementById('navMenu');
+  hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); navMenu.classList.toggle('open'); });
+  document.querySelectorAll('.has-drop > a, .has-subdrop > a').forEach(a => {
+    a.addEventListener('click', e => { if(window.innerWidth <= 1024) { e.preventDefault(); a.parentElement.classList.toggle('open'); } });
+  });
+  window.addEventListener('scroll', () => {
+    const p = document.getElementById('progress');
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    p.style.width = (window.scrollY / h * 100) + '%';
+  }, { passive:true });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='none'; e.target.style.transition='opacity .65s ease, transform .65s ease'; } });
+  }, { threshold:.08 });
+  document.querySelectorAll('.contact-info, .contact-form-wrap').forEach(el => observer.observe(el));
+
+  // Form submit — envía cotización por correo vía Web3Forms
+  document.getElementById('quoteForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const nombre   = document.getElementById('nombre').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const servicio = document.getElementById('servicio').value;
+    const privacy  = document.getElementById('privacy').checked;
+
+    if (!nombre || !telefono || !servicio || !privacy) {
+      alert('Por favor completa los campos obligatorios (nombre, teléfono y servicio) y acepta el aviso de privacidad.');
+      return;
+    }
+
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = 'Enviando…';
+    btn.disabled = true;
+
+    const formData = {
+      access_key: 'ba26b3fd-ce0a-435a-85ea-df65ff077d92',
+      subject: `Nueva cotización de ${nombre} — ${servicio}`,
+      from_name: nombre,
+      email: document.getElementById('email').value || 'sin-email@rapidtransfer.cl',
+      nombre,
+      empresa: document.getElementById('empresa').value,
+      telefono,
+      servicio,
+      cantidad: document.getElementById('cantidad').value,
+      plazo: document.getElementById('plazo').value,
+      mensaje: document.getElementById('mensaje').value,
+      redirect: false
+    };
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('formContent').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        throw new Error(data.message || 'Error al enviar');
+      }
+    } catch(err) {
+      btn.textContent = 'Enviar solicitud de presupuesto →';
+      btn.disabled = false;
+      alert('Hubo un error al enviar el formulario. Por favor escríbenos directamente por WhatsApp.');
+    }
+  });
+</script>
+</body>
+</html>
