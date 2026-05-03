@@ -1,7 +1,19 @@
 # Redirigir /index.html a /
 RewriteEngine On
+
+# Redirigir /index.html a /
 RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html
 RewriteRule ^index\.html$ https://www.rapidtransfer.cl/ [R=301,L]
+
+# Redirigir /pagina.html a /pagina
+RewriteCond %{THE_REQUEST} \ /([^.]+)\.html
+RewriteRule ^([^.]+)\.html$ /$1 [R=301,L]
+
+# Servir el archivo .html cuando se pide sin extensión
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([^.]+)$ $1.html [L]
 
 # Deshabilitar caché para archivos HTML
 <FilesMatch "\.(html|htm)$">
