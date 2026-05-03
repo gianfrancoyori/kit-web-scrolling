@@ -20,7 +20,7 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./
-          server-dir: /home/rapidtra/public_html/
+          server-dir: /
           exclude: |
             **/.git*
             **/.git*/**
