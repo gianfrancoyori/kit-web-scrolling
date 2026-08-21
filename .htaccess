@@ -21,3 +21,8 @@ RewriteRule ^([^.]+)$ $1.html [L]
     Header set Pragma "no-cache"
     Header set Expires 0
 </FilesMatch>
+
+# TEMP: prueba de selector de versión PHP (cPanel MultiPHP)
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82 .php
+</IfModule>
