@@ -452,7 +452,7 @@
   }, { threshold:.08 });
   document.querySelectorAll('.contact-info, .contact-form-wrap').forEach(el => observer.observe(el));
 
-  // Form submit — envía cotización por correo vía Web3Forms
+  // Form submit — envía cotización por correo (Web3Forms) y al CRM en paralelo
   document.getElementById('quoteForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const nombre   = document.getElementById('nombre').value.trim();
@@ -469,7 +469,21 @@
     btn.textContent = 'Enviando…';
     btn.disabled = true;
 
-    const formData = {
+    const crmPayload = {
+      name: nombre,
+      email: document.getElementById('email').value || '',
+      phone: telefono,
+      company: document.getElementById('empresa').value || '',
+      source: 'web',
+      message: [
+        `Servicio: ${servicio}`,
+        document.getElementById('cantidad').value ? `Cantidad: ${document.getElementById('cantidad').value}` : '',
+        document.getElementById('plazo').value ? `Plazo: ${document.getElementById('plazo').value}` : '',
+        document.getElementById('mensaje').value ? `Mensaje: ${document.getElementById('mensaje').value}` : '',
+      ].filter(Boolean).join('\n'),
+    };
+
+    const web3FormsPayload = {
       access_key: 'ba26b3fd-ce0a-435a-85ea-df65ff077d92',
       subject: `Nueva cotización de ${nombre} — ${servicio}`,
       from_name: nombre,
@@ -481,21 +495,31 @@
       cantidad: document.getElementById('cantidad').value,
       plazo: document.getElementById('plazo').value,
       mensaje: document.getElementById('mensaje').value,
-      redirect: false
+      redirect: false,
     };
 
     try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      const data = await res.json();
-      if (data.success) {
+      const [crmResult, web3Result] = await Promise.allSettled([
+        fetch('https://crm-rapid-transfer.vercel.app/api/webhooks/inbound', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(crmPayload),
+        }),
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(web3FormsPayload),
+        }),
+      ]);
+
+      const crmOk = crmResult.status === 'fulfilled' && crmResult.value.ok;
+      const web3Ok = web3Result.status === 'fulfilled' && web3Result.value.ok;
+
+      if (crmOk || web3Ok) {
         document.getElementById('formContent').style.display = 'none';
         document.getElementById('formSuccess').style.display = 'block';
       } else {
-        throw new Error(data.message || 'Error al enviar');
+        throw new Error('Error en ambos canales');
       }
     } catch(err) {
       btn.textContent = 'Enviar solicitud de presupuesto →';
