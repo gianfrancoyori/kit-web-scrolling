@@ -11,6 +11,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validar sintaxis PHP
+        run: |
+          find . -name '*.php' -not -path './vendor/*' -print0 \
+            | xargs -0 -n1 php -l
+
+      # config.php no se versiona: se arma en cada deploy desde los secrets.
+      - name: Generar includes/config.php
+        run: |
+          cp includes/config.example.php includes/config.php
+          php -r '
+            $ruta = "includes/config.php";
+            $php  = file_get_contents($ruta);
+            $valores = [
+              "WEB3FORMS_KEY"        => getenv("WEB3FORMS_KEY"),
+              "CRM_WEBHOOK_URL"      => getenv("CRM_WEBHOOK_URL"),
+              "CRM_WEBHOOK_TOKEN"    => getenv("CRM_WEBHOOK_TOKEN"),
+              "ADS_CONVERSION_LABEL" => getenv("ADS_CONVERSION_LABEL"),
+            ];
+            foreach ($valores as $clave => $valor) {
+              $php = preg_replace(
+                "/define\(\s*\x27" . $clave . "\x27\s*,\s*\x27[^\x27]*\x27\s*\);/",
+                "define(\x27" . $clave . "\x27, \x27" . addslashes((string) $valor) . "\x27);",
+                $php
+              );
+            }
+            if (strpos($php, getenv("WEB3FORMS_KEY") ?: "\x00") === false) {
+              fwrite(STDERR, "ERROR: WEB3FORMS_KEY no quedó en config.php\n");
+              exit(1);
+            }
+            file_put_contents($ruta, $php);
+          '
+          php -l includes/config.php
+        env:
+          WEB3FORMS_KEY:        ${{ secrets.WEB3FORMS_KEY }}
+          CRM_WEBHOOK_URL:      ${{ secrets.CRM_WEBHOOK_URL }}
+          CRM_WEBHOOK_TOKEN:    ${{ secrets.CRM_WEBHOOK_TOKEN }}
+          ADS_CONVERSION_LABEL: ${{ secrets.ADS_CONVERSION_LABEL }}
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -24,9 +62,17 @@ jobs:
           exclude: |
             **/.git*
             **/.git*/**
-            **/node_modules/**
             **/.github/**
+            **/.claude/**
+            **/node_modules/**
+            **/logs/**
             **/CLAUDE.md
-            **/memory/**
-            **/rapidtransfer.zip
+            **/README.md
             **/INSTRUCCIONES*
+            **/memory/**
+            **/*.zip
+            **/includes/config.example.php
+            **/assets/Imagenes/**
+            **/assets/Logos Empresas/**
+            **/assets/Logos RapidTransfer 2026/**
+            **/assets/logos/**

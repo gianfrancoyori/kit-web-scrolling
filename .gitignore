@@ -1,8 +1,27 @@
+# Credenciales — se genera en el deploy desde GitHub Secrets
+includes/config.php
+
+# Sistema
 *.DS_Store
 __MACOSX
-rapidtransfer.zip
-favicon.zip
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Dependencias
+node_modules/
+vendor/
+
+# Archivos locales del proyecto
 memory/
-CLAUDE.md
-INSTRUCCIONES*
+logs/
+*.zip
+.claude/
+
+# Originales de imágenes (los optimizados en WebP viven en assets/img/)
+assets/Imagenes/
+assets/logos/
+assets/Logos\ Empresas/
 assets/Logos\ RapidTransfer\ 2026/
