@@ -1,10 +1,13 @@
 # ── PHP 8.2 (selector cPanel EA4) ──
 AddHandler application/x-httpd-ea-php82 .php
 
-RewriteEngine On
+# ── Nunca servir includes/, logs/ ni config: se evalúa antes de mod_rewrite ──
+RedirectMatch 403 ^/(includes|logs)(/|$)
+<FilesMatch "^config(\.example)?\.php$">
+  Require all denied
+</FilesMatch>
 
-# ── Bloquear includes/ y logs/ antes que cualquier otra regla ──
-RewriteRule ^(includes|logs)/ - [F,L]
+RewriteEngine On
 
 # ── HTTPS + www canónico ──
 RewriteCond %{HTTPS} off [OR]
@@ -25,9 +28,6 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^([^.]+)$ $1.php [L]
-
-# ── Bloquear acceso directo a includes/ ──
-RewriteRule ^includes/ - [F,L]
 
 # ── Página 404 ──
 ErrorDocument 404 /404.php
