@@ -84,8 +84,9 @@ $lineas_catalogo = [
 
   <script>document.documentElement.classList.add('js');</script>
 
-  <!-- Google tag: GA4 + Google Ads en una sola carga -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= GA4_ID ?>"></script>
+  <!-- Google tag: GA4 + Ads en una sola carga.
+       Los eventos se encolan en dataLayer desde ya; el script (≈340 KB) se
+       descarga tras la carga o al primer gesto, para no competir con el LCP. -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -93,6 +94,22 @@ $lineas_catalogo = [
     gtag('config', '<?= GA4_ID ?>');
     gtag('config', '<?= ADS_ID ?>');
     window.ADS_CONVERSION_LABEL = '<?= ADS_CONVERSION_LABEL ?>';
+    (function () {
+      var pedido = false;
+      function cargarTag() {
+        if (pedido) return;
+        pedido = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=<?= GA4_ID ?>';
+        document.head.appendChild(s);
+      }
+      if (document.readyState === 'complete') setTimeout(cargarTag, 1200);
+      else window.addEventListener('load', function () { setTimeout(cargarTag, 1200); });
+      ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+        window.addEventListener(ev, cargarTag, { once: true, passive: true });
+      });
+    })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

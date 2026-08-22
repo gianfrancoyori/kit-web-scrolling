@@ -24,10 +24,13 @@ require __DIR__ . '/includes/header.php';
           <img src="/assets/img/hero-proceso-transferencia.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
         </picture>
       </div>
-      <div class="hero-slide">
+      <?php /* La 2ª diapositiva se descarga tras la carga (home.js): no compite con el LCP. */ ?>
+      <div class="hero-slide" data-slide-diferida
+           data-src="/assets/img/hero-bordado.webp"
+           data-src-movil="/assets/img/hero-bordado-768.webp">
         <picture>
-          <source media="(max-width:768px)" srcset="/assets/img/hero-bordado-768.webp">
-          <img src="/assets/img/hero-bordado.webp" alt="" width="1024" height="1024" loading="lazy" decoding="async">
+          <source media="(max-width:768px)">
+          <img alt="" width="1024" height="1024" loading="lazy" decoding="async">
         </picture>
       </div>
     </div>
