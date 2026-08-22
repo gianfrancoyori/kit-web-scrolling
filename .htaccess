@@ -3,6 +3,9 @@ AddHandler application/x-httpd-ea-php82 .php
 
 RewriteEngine On
 
+# ── Bloquear includes/ y logs/ antes que cualquier otra regla ──
+RewriteRule ^(includes|logs)/ - [F,L]
+
 # ── HTTPS + www canónico ──
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^rapidtransfer\.cl$ [NC]
