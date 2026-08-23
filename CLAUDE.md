@@ -21,8 +21,12 @@ CSS en `css/`, JS en `js/`, credenciales fuera del repositorio, imágenes en Web
 ├── api/enviar-cotizacion.php   Recibe el formulario; habla con Web3Forms y el CRM
 ├── css/  styles.css (base) + un archivo por página
 ├── js/   main.js (común) + un archivo por página
-└── assets/img/  Imágenes optimizadas en WebP
+├── assets/img/    Imágenes optimizadas en WebP
+└── assets/fonts/  Inter autoalojada (variable font, pesos 400–900)
 ```
+
+`includes/` tiene su propio `.htaccess` con `Require all denied`: nada de ahí se
+sirve por HTTP.
 
 ## Reglas del proyecto
 
@@ -41,7 +45,19 @@ CSS en `css/`, JS en `js/`, credenciales fuera del repositorio, imágenes en Web
   IntersectionObserver. El contenido debe ser visible sin JavaScript: nunca pongas
   `opacity:0` en el CSS base, solo bajo el prefijo `.js`.
 - **Contraste**: para texto sobre navy usa `--on-dark-1/2/3`; para acentos sobre fondo
-  claro usa `--accent-text` (`--accent` no alcanza 4.5:1 sobre blanco).
+  claro usa `--accent-text` (`--accent` no alcanza 4.5:1 sobre blanco). El botón de
+  WhatsApp lleva texto navy sobre el verde de marca: blanco sobre ese verde da 1,98:1.
+- **Navbar**: transparente sobre el héroe y sólido al hacer scroll (`.is-solid`, que
+  añade `js/main.js`). Los dos logos salen del mismo original y se cruzan por opacidad;
+  ambos con fondo transparente, o al hacer scroll aparece un rectángulo blanco.
+  El menú es de un nivel: cada página es un enlace directo, y las 11 líneas del catálogo
+  cuelgan de `Ropa Corporativa`, que se abre al pasar el cursor. El dropdown nace pegado
+  al navbar (`top:100%`): si dejas hueco, el hover se corta al bajar.
+- **CSS embebido**: `includes/header.php` inyecta `css/styles.css` y la hoja de la página
+  con `file_get_contents`. El origen editable sigue siendo `css/`; no vuelvas a enlazarlas
+  con `<link>`, porque el hosting tiene ~380 ms de TTFB y cada hoja costaba un viaje extra.
+- **Analítica sin bloquear**: `gtag.js` (≈340 KB) se descarga tras `load` o al primer
+  gesto. Los eventos se encolan antes en `dataLayer`, así que no se pierde ninguno.
 - **Emojis decorativos** siempre en `<span aria-hidden="true">`.
 - **Conversiones**: añade `data-conversion="whatsapp|telefono|email"` a los enlaces de
   contacto; `js/main.js` dispara el evento de GA4 y de Google Ads.
@@ -59,9 +75,13 @@ El hosting arranca en PHP 5.4; el `.htaccess` fuerza PHP 8.2 con
 
 ## Objetivo de rendimiento
 
-PageSpeed Insights ≥ 90 en móvil y escritorio. Línea base antes de la
-refactorización (ago-2026): 33 móvil / 73 escritorio, con LCP móvil de 33,9 s
-causado por PNGs de hasta 2,7 MB y GSAP bloqueando el hilo principal.
+PageSpeed Insights ≥ 90 en móvil y escritorio. **Cumplido (ago-2026): 100 escritorio,
+99 móvil** (mediana de 3 corridas), desde 73/33 con LCP móvil de 33,9 s.
+
+Al medir: Lighthouse local varía muchísimo si la máquina está cargada — una corrida dio
+74 con el mismo código que otra dio 100. Mide con la máquina en reposo y toma la mediana
+de 3. Best Practices se queda en 77 por la cookie de terceros de Google Ads; no es un
+defecto del sitio y quitarla costaría el remarketing.
 
 ## Pendientes conocidos
 
