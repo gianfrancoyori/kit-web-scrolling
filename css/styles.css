@@ -8,7 +8,7 @@
   --navy-dark: #021E30;
   --accent:    #0FA3D4;
   --accent-hi: #40D9FF;   /* acento sobre fondos oscuros */
-  --accent-text: #0B7EA8; /* acento con contraste AA sobre blanco */
+  --accent-text: #0A7299; /* acento con contraste AA sobre blanco y sobre --light (5,07:1) */
   --light:     #F5F8FA;
   --border:    #E4ECF0;
   --text:      #1A2838;
@@ -138,13 +138,16 @@ html.js .navbar:not(.is-solid) .hamburger span { background:#fff; }
 html.js .navbar:not(.is-solid) .drop-toggle::after { border-top-color:var(--on-dark-1); }
 
 /* ── Dropdown de líneas (Ropa Corporativa) ── */
+/* 26×26 mínimo para cumplir el tamaño de objetivo táctil. */
 .drop-toggle {
-  background:none; border:none; cursor:pointer; padding:.5rem .35rem .5rem 0; margin-left:-.55rem;
+  background:none; border:none; cursor:pointer;
+  width:26px; height:26px; margin-left:-.5rem; padding:0;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
 .drop-toggle::after {
   content:''; display:block;
   border:4px solid transparent; border-top-color:var(--navy);
-  transition:transform .2s;
+  margin-top:4px; transition:transform .2s;
 }
 .navbar-menu > li.has-drop:hover .drop-toggle::after,
 .navbar-menu > li.has-drop.open .drop-toggle::after { transform:rotate(180deg); }
@@ -180,20 +183,21 @@ html.js .navbar:not(.is-solid) .drop-toggle::after { border-top-color:var(--on-d
 
 /* ── Lado derecho ── */
 .navbar-right { display:flex; align-items:center; gap:.75rem; flex-shrink:0; }
+/* Navy sobre blanco y blanco sobre navy: 14,7:1 en los dos estados. */
 .nav-cta-btn {
   display:inline-flex; align-items:center; gap:.45rem;
-  background:var(--accent); color:#fff; text-decoration:none;
+  background:var(--navy); color:#fff; text-decoration:none;
   padding:.5rem 1.3rem; border-radius:50px;
   font-size:.78rem; font-weight:700; letter-spacing:.03em;
-  transition:background .2s, transform .2s; white-space:nowrap;
+  transition:background .2s, color .2s, transform .2s; white-space:nowrap;
 }
-.nav-cta-btn:hover { background:var(--navy); transform:translateY(-1px); }
-/* Sobre el héroe: se mantiene sólido y se separa del fondo con un halo. */
+.nav-cta-btn:hover { background:var(--accent-text); transform:translateY(-1px); }
+/* Sobre el héroe se invierte: blanco sólido, que resalta contra la foto oscura. */
 html.js .navbar:not(.is-solid) .nav-cta-btn {
-  background:var(--accent); color:#fff;
+  background:#fff; color:var(--navy);
   box-shadow:0 2px 14px rgba(2,30,48,.45);
 }
-html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:#fff; color:var(--navy); }
+html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:var(--accent-hi); color:var(--navy-dark); }
 
 /* ── Hamburguesa ── */
 .hamburger { display:none; background:none; border:none; cursor:pointer; padding:.5rem; flex-shrink:0; }
@@ -255,9 +259,11 @@ html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:#fff; color:var(-
 /* ══════════════════════════════════════
    BOTONES COMPARTIDOS
 ══════════════════════════════════════ */
+/* Se conserva el verde de WhatsApp (reconocible) con texto navy: 7,4:1.
+   Blanco sobre ese verde solo llega a 1,98:1. */
 .btn-wa {
   display:inline-flex; align-items:center; gap:.6rem;
-  background:var(--wa); color:#fff; text-decoration:none;
+  background:var(--wa); color:var(--navy); text-decoration:none;
   padding:.9rem 2rem; border-radius:50px; font-weight:700; font-size:.95rem;
   transition:transform .25s, box-shadow .25s; border:none; cursor:pointer; font-family:inherit;
 }
