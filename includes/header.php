@@ -142,8 +142,8 @@ $lineas_catalogo = [
 
 <nav class="navbar" id="navbar" aria-label="Principal">
   <a href="/" class="navbar-logo" aria-label="<?= sanitizar(SITE_NAME) ?> — Inicio">
-    <img class="logo-oscuro" src="/assets/img/logo-rapidtransfer.webp" alt="<?= sanitizar(SITE_NAME) ?>" width="560" height="140">
-    <img class="logo-claro" src="/assets/img/logo-rapidtransfer-blanco.webp" alt="" aria-hidden="true" width="500" height="140">
+    <img class="logo-oscuro" src="/assets/img/logo-rapidtransfer.webp" alt="<?= sanitizar(SITE_NAME) ?>" width="640" height="160" fetchpriority="high">
+    <img class="logo-claro" src="/assets/img/logo-rapidtransfer-blanco.webp" alt="" aria-hidden="true" width="640" height="160" fetchpriority="high">
   </a>
 
   <ul class="navbar-menu" id="navMenu">
@@ -164,11 +164,10 @@ $lineas_catalogo = [
     </li>
 <?php endif; ?>
 <?php endforeach; ?>
-    <li class="nav-cta-item"><a href="/contacto" class="nav-cta-btn">Cotizar ahora</a></li>
   </ul>
 
   <div class="navbar-right">
-    <a href="/contacto" class="nav-cta-btn nav-cta-desktop">Cotizar ahora</a>
+    <a href="/contacto" class="nav-cta-btn">Cotizar ahora</a>
     <button class="hamburger" id="hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="navMenu">
       <span></span><span></span><span></span>
     </button>

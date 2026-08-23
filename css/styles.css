@@ -95,12 +95,25 @@ html.js .reveal-right.in { opacity:1; transform:none; }
   transition:background .35s ease, box-shadow .35s ease, border-color .35s ease;
 }
 
-.navbar-logo { display:flex; align-items:center; position:relative; }
-.navbar-logo img { height:44px; width:auto; object-fit:contain; display:block; }
-.navbar-logo .logo-claro { display:none; }
+/* Los dos logos (color y blanco) salen del mismo original, así que comparten
+   geometría: se superponen y se cruzan con la misma duración que el navbar,
+   sin salto ni fondo opaco de por medio. */
+.navbar-logo {
+  position:relative; display:block; flex-shrink:0;
+  width:176px; height:44px;
+  transition:width .35s ease, height .35s ease;
+}
+.navbar-logo img {
+  position:absolute; inset:0;
+  width:100%; height:100%; object-fit:contain; display:block;
+  transition:opacity .35s ease;
+}
+.navbar-logo .logo-claro { opacity:0; }
 
-.navbar-menu { display:flex; align-items:center; gap:0; list-style:none; }
-.navbar-menu > li { position:relative; display:flex; align-items:center; }
+.navbar-menu { display:flex; align-items:stretch; gap:0; list-style:none; }
+/* align-self:stretch → el <li> ocupa todo el alto del navbar, así el dropdown
+   (top:100%) nace justo en su borde inferior y el hover no se corta. */
+.navbar-menu > li { position:relative; display:flex; align-items:center; align-self:stretch; }
 .navbar-menu > li > a {
   display:block; padding:.5rem .95rem;
   color:var(--navy); text-decoration:none;
@@ -117,8 +130,10 @@ html.js .navbar:not(.is-solid) {
 html.js .navbar:not(.is-solid) .navbar-menu > li > a { color:var(--on-dark-1); }
 html.js .navbar:not(.is-solid) .navbar-menu > li > a:hover,
 html.js .navbar:not(.is-solid) .navbar-menu > li.active > a { color:var(--accent-hi); }
-html.js .navbar:not(.is-solid) .navbar-logo .logo-oscuro { display:none; }
-html.js .navbar:not(.is-solid) .navbar-logo .logo-claro  { display:block; }
+/* Sobre el héroe el logo va en blanco y algo más grande. */
+html.js .navbar:not(.is-solid) .navbar-logo { width:232px; height:58px; }
+html.js .navbar:not(.is-solid) .navbar-logo .logo-oscuro { opacity:0; }
+html.js .navbar:not(.is-solid) .navbar-logo .logo-claro  { opacity:1; }
 html.js .navbar:not(.is-solid) .hamburger span { background:#fff; }
 html.js .navbar:not(.is-solid) .drop-toggle::after { border-top-color:var(--on-dark-1); }
 
@@ -134,22 +149,26 @@ html.js .navbar:not(.is-solid) .drop-toggle::after { border-top-color:var(--on-d
 .navbar-menu > li.has-drop:hover .drop-toggle::after,
 .navbar-menu > li.has-drop.open .drop-toggle::after { transform:rotate(180deg); }
 
+/* El menú arranca pegado al navbar (top:100%): sin hueco no se pierde el hover
+   al bajar el cursor. La separación visual la da el margen interior. */
 .dropdown {
-  position:absolute; top:calc(100% + 6px); left:0;
+  position:absolute; top:100%; left:0;
   background:#fff;
-  border:1px solid var(--border); border-radius:12px;
+  border:1px solid var(--border); border-radius:0 0 12px 12px;
   box-shadow:0 12px 40px rgba(0,0,0,.12);
-  min-width:200px; list-style:none; padding:.5rem 0;
+  min-width:210px; list-style:none; padding:.5rem 0;
   opacity:0; visibility:hidden; pointer-events:none;
-  transform:translateY(8px);
-  transition:opacity .25s, transform .25s, visibility .25s;
+  transform:translateY(6px);
+  transition:opacity .2s, transform .2s, visibility .2s;
+  transition-delay:.18s; /* margen de gracia al salir del menú */
   z-index:200;
   max-height:min(70vh, 520px); overflow-y:auto;
 }
 .navbar-menu > li.has-drop:hover .dropdown,
 .navbar-menu > li.has-drop:focus-within .dropdown,
 .navbar-menu > li.has-drop.open .dropdown {
-  opacity:1; visibility:visible; pointer-events:all; transform:translateY(0);
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateY(0);
+  transition-delay:0s;
 }
 .dropdown li a {
   display:block; padding:.6rem 1.25rem;
@@ -169,9 +188,12 @@ html.js .navbar:not(.is-solid) .drop-toggle::after { border-top-color:var(--on-d
   transition:background .2s, transform .2s; white-space:nowrap;
 }
 .nav-cta-btn:hover { background:var(--navy); transform:translateY(-1px); }
-html.js .navbar:not(.is-solid) .nav-cta-btn { background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.45); }
-html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:var(--accent); border-color:var(--accent); }
-.nav-cta-item { display:none; }
+/* Sobre el héroe: se mantiene sólido y se separa del fondo con un halo. */
+html.js .navbar:not(.is-solid) .nav-cta-btn {
+  background:var(--accent); color:#fff;
+  box-shadow:0 2px 14px rgba(2,30,48,.45);
+}
+html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:#fff; color:var(--navy); }
 
 /* ── Hamburguesa ── */
 .hamburger { display:none; background:none; border:none; cursor:pointer; padding:.5rem; flex-shrink:0; }
@@ -323,6 +345,46 @@ html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:var(--accent); bo
 .breadcrumb-inner span { color:var(--muted); }
 
 /* ══════════════════════════════════════
+   CARRUSEL DE LOGOS DE CLIENTES
+   (portada y nosotros)
+══════════════════════════════════════ */
+.clients { padding:5rem 2.5rem; background:var(--light); }
+.marquee-outer {
+  overflow:hidden; position:relative; padding:.75rem 0; margin-top:2.5rem;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.marquee-track {
+  display:flex; gap:1.5rem; width:max-content;
+  animation:marqueeScroll 40s linear infinite;
+}
+.marquee-outer:hover .marquee-track,
+.marquee-outer:focus-within .marquee-track { animation-play-state:paused; }
+.marquee-logo {
+  flex-shrink:0; background:#fff;
+  border:1px solid var(--border); border-radius:12px;
+  padding:.9rem 1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  height:78px; min-width:140px;
+  transition:border-color .2s, box-shadow .2s, transform .2s;
+}
+.marquee-logo:hover { border-color:var(--accent); box-shadow:0 4px 18px rgba(15,163,212,.14); transform:translateY(-2px); }
+/* Los atributos width/height evitan el CLS; aquí se reescalan al alto real. */
+.marquee-logo img {
+  width:auto; height:auto;
+  max-height:44px; max-width:120px;
+  object-fit:contain; display:block;
+}
+@keyframes marqueeScroll {
+  from { transform:translateX(0); }
+  to   { transform:translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-outer { overflow-x:auto; }
+  .marquee-track { animation:none; }
+}
+
+/* ══════════════════════════════════════
    BLOQUE INFO (bordados / estampados)
 ══════════════════════════════════════ */
 .info-section { padding:6rem 2.5rem; background:#fff; }
@@ -381,6 +443,9 @@ html.js .navbar:not(.is-solid) .nav-cta-btn:hover { background:var(--accent); bo
 ══════════════════════════════════════ */
 @media (max-width:1024px) {
   .navbar { padding:0 1.5rem; }
+  .navbar-logo { width:148px; height:37px; }
+  html.js .navbar:not(.is-solid) .navbar-logo { width:180px; height:45px; }
+  .nav-cta-btn { padding:.45rem 1rem; font-size:.72rem; }
   .navbar-menu { display:none; position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
     background:#fff; flex-direction:column; align-items:flex-start; padding:1.5rem;
     overflow-y:auto; gap:0; z-index:999; border-top:1px solid var(--border); }

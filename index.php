@@ -179,7 +179,7 @@ require __DIR__ . '/includes/header.php';
     </div>
   </section>
 
-  <section class="clients">
+  <section class="clients" id="clientes">
     <div class="sec-wrap">
       <div class="sec-header">
         <div class="sec-tag">Nuestros Clientes</div>

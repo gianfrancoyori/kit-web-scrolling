@@ -7,6 +7,8 @@
   max-width:1140px; margin:0 auto;
   display:grid; grid-template-columns:1fr 1.6fr; gap:4rem; align-items:start;
 }
+.contact-info { display:flex; flex-direction:column; gap:1.5rem; }
+.contact-form-wrap { min-width:0; }
 
 /* ── Columna de información ── */
 .info-card {

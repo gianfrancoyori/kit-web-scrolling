@@ -69,13 +69,28 @@
     });
   }
 
-  /* ── Toggle del dropdown de líneas (móvil y teclado) ── */
+  /* ── Dropdown de líneas: en escritorio se abre con el cursor (CSS :hover);
+       el botón sirve para móvil y para navegación por teclado. ── */
+  var conDrop = document.querySelectorAll('.navbar-menu > li.has-drop');
   document.querySelectorAll('.drop-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var li = btn.closest('li');
       var abierto = li.classList.toggle('open');
       btn.setAttribute('aria-expanded', String(abierto));
     });
+  });
+  function cerrarDrops() {
+    conDrop.forEach(function (li) {
+      li.classList.remove('open');
+      var b = li.querySelector('.drop-toggle');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+  }
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.navbar-menu > li.has-drop')) cerrarDrops();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') cerrarDrops();
   });
 
   /* ── Revelado progresivo ── */
