@@ -28,7 +28,6 @@ $page_jsonld  = $page_jsonld  ?? [];
 $page_slug    = $page_slug    ?? '';
 $preload_hero = $preload_hero ?? '';
 $canonical    = SITE_URL . '/' . $page_slug;
-$css_v        = filemtime(__DIR__ . '/../css/styles.css');
 
 /* Ítems del menú principal: slug => etiqueta ('' = portada) */
 $nav_items = [
@@ -112,13 +111,13 @@ $lineas_catalogo = [
     })();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/styles.css?v=<?= $css_v ?>">
-<?php if ($page_css !== ''): ?>
-  <link rel="stylesheet" href="/css/<?= sanitizar($page_css) ?>?v=<?= filemtime(__DIR__ . '/../css/' . $page_css) ?>">
-<?php endif; ?>
+  <link rel="preload" href="/assets/fonts/inter-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <?php /* El CSS va embebido: el hosting tiene ~300 ms de TTFB, así que cada
+           hoja aparte costaba un viaje de ida y vuelta antes del primer pintado.
+           El origen sigue siendo css/, que es lo que se edita. */ ?>
+  <style><?= file_get_contents(__DIR__ . '/../css/styles.css') ?><?php
+    if ($page_css !== '') echo file_get_contents(__DIR__ . '/../css/' . $page_css);
+  ?></style>
 
   <?= jsonld(jsonld_negocio()) . "\n" ?>
 <?php foreach ($page_jsonld as $schema): ?>
